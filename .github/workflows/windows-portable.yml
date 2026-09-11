@@ -32,6 +32,15 @@ jobs:
           rustup toolchain install stable --profile minimal
           rustup default stable
 
+      - name: Restore Rust build cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: windows-cargo-${{ hashFiles('src-tauri/Cargo.lock') }}
+
       - name: Install JavaScript dependencies
         run: npm ci
 
@@ -58,7 +67,7 @@ jobs:
             if ($process.HasExited) {
               throw "EnglishReader.exe exited during startup with code $($process.ExitCode)"
             }
-            $logPath = Join-Path $env:APPDATA "com.englishreader.desktop/logs/English Reader.log"
+            $logPath = Join-Path $env:LOCALAPPDATA "com.englishreader.desktop/logs/English Reader.log"
             if (-not (Test-Path $logPath)) {
               throw "Tauri startup log was not created at $logPath"
             }
