@@ -18,10 +18,10 @@ jobs:
 
     steps:
       - name: Check out source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -48,16 +48,42 @@ jobs:
       - name: Build portable application
         run: npm run build:windows-portable
 
+      - name: Smoke-test packaged application
+        shell: pwsh
+        run: |
+          $executable = Resolve-Path "release-v2/EnglishReader-Windows-x64/EnglishReader.exe"
+          $process = Start-Process -FilePath $executable -PassThru
+          try {
+            Start-Sleep -Seconds 15
+            if ($process.HasExited) {
+              throw "EnglishReader.exe exited during startup with code $($process.ExitCode)"
+            }
+            $logPath = Join-Path $env:APPDATA "com.englishreader.desktop/logs/English Reader.log"
+            if (-not (Test-Path $logPath)) {
+              throw "Tauri startup log was not created at $logPath"
+            }
+            $log = Get-Content $logPath -Raw
+            $log
+            if ($log -notmatch "checkpoint=session-ready" -or $log -notmatch "checkpoint=phonemizer-ready") {
+              throw "Native model or English phonemizer did not become ready"
+            }
+          } finally {
+            if (-not $process.HasExited) {
+              Stop-Process -Id $process.Id -Force
+            }
+          }
+
       - name: Create ZIP and checksum
         shell: pwsh
         run: |
           $archive = "release-v2/EnglishReader-Windows-x64.zip"
           Compress-Archive -Path "release-v2/EnglishReader-Windows-x64/*" -DestinationPath $archive -Force
           $hash = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
-          "$hash  EnglishReader-Windows-x64.zip" | Set-Content "release-v2/SHA256SUMS.txt" -Encoding ascii
+          $checksumPath = Join-Path $PWD "release-v2/SHA256SUMS.txt"
+          [IO.File]::WriteAllText($checksumPath, "$hash  EnglishReader-Windows-x64.zip`n", [Text.ASCIIEncoding]::new())
 
       - name: Upload portable ZIP
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: EnglishReader-Windows-x64
           path: |
