@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; media-src blob:; connect-src data: blob:; worker-src blob:;">
+    <title>Phase 0 · 离线 Kokoro TTS 验证</title>
+    <style>
+      :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif; }
+      body { margin: 0; background: #f5f7f4; color: #1c2821; }
+      main { width: min(680px, calc(100% - 40px)); margin: 8vh auto; padding: 32px; background: white; border: 1px solid #dfe6df; border-radius: 18px; box-shadow: 0 12px 32px rgba(34, 55, 42, .08); }
+      h1 { margin: 0 0 8px; font-size: 25px; }
+      p { color: #607067; }
+      label { display: grid; gap: 8px; margin: 28px 0 18px; font-weight: 650; }
+      input { padding: 13px 14px; border: 1px solid #b9c5bc; border-radius: 10px; font: inherit; }
+      .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+      button { border: 0; border-radius: 10px; padding: 12px 18px; background: #245c3c; color: white; font: inherit; font-weight: 650; cursor: pointer; }
+      button:disabled { opacity: .45; cursor: wait; }
+      #status { margin: 20px 0; padding: 12px 14px; background: #f1f5f1; border-radius: 10px; }
+      #status[data-kind="ready"] { color: #176136; background: #eaf7ee; }
+      #status[data-kind="error"] { color: #9a2b25; background: #fff0ef; }
+      audio { width: 100%; margin: 4px 0 18px; }
+      details { color: #607067; }
+      pre { white-space: pre-wrap; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Phase 0 · 离线 Kokoro TTS 验证</h1>
+      <p>单文件、file://、WASM CPU、Kokoro v1.0 q8</p>
+      <label>测试文本<input id="text" value="environment" autocomplete="off"></label>
+      <div class="actions">
+        <button id="initialize">初始化模型</button>
+        <button id="generate" disabled>生成</button>
+      </div>
+      <div id="status" role="status">尚未初始化</div>
+      <audio id="audio" controls hidden></audio>
+      <details><summary>验证信息</summary><pre id="diagnostics"></pre></details>
+    </main>
+    {{EMBEDDED_ASSETS}}
+    <script>{{APP_BUNDLE}}</script>
+  </body>
+</html>

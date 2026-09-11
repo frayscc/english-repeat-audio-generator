@@ -1,0 +1,37 @@
+{
+  "name": "english-repeat-audio-generator",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:phase0": "node scripts/build-phase0.mjs",
+    "build:phase1": "node scripts/build-phase1.mjs",
+    "build:phase2": "node scripts/build-phase2.mjs",
+    "build:phase3": "node scripts/build-phase2.mjs",
+    "build:release": "node scripts/build-release.mjs",
+    "prepare:v2-resources": "node scripts/prepare-v2-resources.mjs",
+    "build:v2": "npm run prepare:v2-resources && node scripts/build-v2.mjs",
+    "build:windows-portable": "node scripts/build-windows-portable.mjs",
+    "tauri": "tauri",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/audio.test.ts test/projectGenerator.test.ts test/parser.test.ts test/phase0-build.test.js",
+    "test:phase0": "node scripts/test-phase0.mjs",
+    "test:phase1": "node scripts/test-phase1.mjs",
+    "test:phase2": "node scripts/test-phase2.mjs",
+    "test:phase3": "node scripts/test-phase3.mjs",
+    "test:release": "node scripts/test-release.mjs",
+    "test:v2": "node scripts/test-v2-build.mjs",
+    "test:acceptance": "node scripts/test-acceptance.mjs"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "2.11.1",
+    "kokoro-js": "1.2.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.11.4",
+    "esbuild": "0.25.9",
+    "playwright": "1.55.0",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2"
+  }
+}

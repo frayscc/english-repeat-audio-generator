@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "English Reader",
+  "version": "2.0.0",
+  "identifier": "com.englishreader.desktop",
+  "build": {
+    "beforeDevCommand": {
+      "script": "npm run build:v2",
+      "wait": true
+    },
+    "beforeBuildCommand": "npm run build:v2",
+    "frontendDist": "../dist/v2"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "英语跟读音频生成器",
+        "width": 1180,
+        "height": 780,
+        "minWidth": 900,
+        "minHeight": 640,
+        "center": true,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["$RESOURCE/resources/**"]
+      },
+      "csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; media-src 'self' blob: asset: http://asset.localhost; connect-src 'self' asset: http://asset.localhost; worker-src 'self' blob:"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["app"],
+    "category": "Education",
+    "shortDescription": "完全离线的英语跟读音频生成器",
+    "longDescription": "在本地生成英语跟读练习音频，无需联网或账号。",
+    "resources": {
+      "../resources-release/": "resources/",
+      "../LICENSE": "LICENSE.txt",
+      "../THIRD_PARTY_LICENSES.md": "THIRD_PARTY_LICENSES.md",
+      "../licenses/onnxruntime-LICENSE.txt": "licenses/onnxruntime-LICENSE.txt"
+    }
+  }
+}

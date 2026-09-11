@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; media-src blob:; connect-src data: blob:; worker-src blob:;">
+    <title>Phase 1 · 核心音频引擎</title>
+    <style>
+      :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif; color: #1c2821; }
+      body { margin: 0; background: #f5f7f4; }
+      main { width: min(760px, calc(100% - 40px)); margin: 5vh auto; padding: 30px; border: 1px solid #dfe6df; border-radius: 18px; background: #fff; }
+      h1 { margin: 0 0 8px; font-size: 25px; } p { color: #607067; }
+      textarea { width: 100%; min-height: 130px; box-sizing: border-box; resize: vertical; padding: 12px; border: 1px solid #b9c5bc; border-radius: 10px; font: inherit; line-height: 1.6; }
+      .settings { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
+      label { display: grid; gap: 6px; color: #526159; font-size: 13px; }
+      input, select { min-width: 0; padding: 9px; border: 1px solid #b9c5bc; border-radius: 8px; font: inherit; }
+      .actions { display: flex; gap: 10px; } button, a { border: 0; border-radius: 9px; padding: 11px 16px; background: #245c3c; color: white; font: inherit; font-weight: 650; text-decoration: none; }
+      button:disabled { opacity: .45; } #status { margin: 18px 0; padding: 11px; border-radius: 9px; background: #f1f5f1; }
+      #status[data-kind="ready"] { color: #176136; background: #eaf7ee; } #status[data-kind="error"] { color: #9a2b25; background: #fff0ef; }
+      audio { width: 100%; } pre { white-space: pre-wrap; font-size: 12px; color: #607067; }
+      @media (max-width: 650px) { .settings { grid-template-columns: 1fr 1fr; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Phase 1 · 核心音频引擎</h1>
+      <p>真实多词条 TTS、任务缓存、重复与停顿拼接、PCM WAV 编码验证页</p>
+      <textarea id="input">1. environment
+2、protect the environment</textarea>
+      <div class="settings">
+        <label>重复次数<select id="repeat-count"><option>1</option><option selected>2</option><option>3</option></select></label>
+        <label>朗读速度<input id="speed" type="number" min="0.7" max="1.2" step="0.05" value="0.9"></label>
+        <label>同词间隔（秒）<input id="repeat-gap" type="number" min="0.3" max="5" step="0.1" value="1.2"></label>
+        <label>词条间隔（秒）<input id="item-gap" type="number" min="0.5" max="10" step="0.1" value="2"></label>
+      </div>
+      <div class="actions"><button id="initialize">初始化模型</button><button id="generate" disabled>生成音频</button><a id="download" download="phase1.wav" hidden>下载 WAV</a></div>
+      <div id="status">尚未初始化</div>
+      <audio id="audio" controls hidden></audio>
+      <details><summary>引擎诊断</summary><pre id="diagnostics"></pre></details>
+    </main>
+    {{EMBEDDED_ASSETS}}
+    <script>{{APP_BUNDLE}}</script>
+  </body>
+</html>

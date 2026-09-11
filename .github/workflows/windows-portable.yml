@@ -1,0 +1,68 @@
+name: Build Windows portable
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-portable-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Windows x64 portable
+    runs-on: windows-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up stable Rust
+        shell: pwsh
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      - name: Verify source and offline resources
+        shell: pwsh
+        run: |
+          npm run typecheck
+          npm test
+          npm run build:v2
+          npm run test:v2
+          cargo test --manifest-path src-tauri/Cargo.toml
+          cargo clippy --manifest-path src-tauri/Cargo.toml -- -D warnings
+
+      - name: Build portable application
+        run: npm run build:windows-portable
+
+      - name: Create ZIP and checksum
+        shell: pwsh
+        run: |
+          $archive = "release-v2/EnglishReader-Windows-x64.zip"
+          Compress-Archive -Path "release-v2/EnglishReader-Windows-x64/*" -DestinationPath $archive -Force
+          $hash = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
+          "$hash  EnglishReader-Windows-x64.zip" | Set-Content "release-v2/SHA256SUMS.txt" -Encoding ascii
+
+      - name: Upload portable ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: EnglishReader-Windows-x64
+          path: |
+            release-v2/EnglishReader-Windows-x64.zip
+            release-v2/SHA256SUMS.txt
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30

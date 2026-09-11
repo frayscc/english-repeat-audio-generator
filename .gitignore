@@ -1,0 +1,26 @@
+node_modules/
+.cache/
+artifacts/
+test-results/
+*.log
+.DS_Store
+
+# Generated frontend and desktop artifacts
+dist/
+src-tauri/target/
+release/
+release-v2/
+resources-release/
+
+# V1 generated single-file builds (kept locally as historical artifacts)
+/EnglishReader.html
+/phase1.html
+/test.html
+
+# Legacy browser runtime copies; npm and V2 builds recreate what they need
+resources/
+
+# Experimental V1 model variant; V2 uses model_quantized.onnx
+assets/kokoro-v1.0/onnx/model_q8f16.onnx
+
+*.zip

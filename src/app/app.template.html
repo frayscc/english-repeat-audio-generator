@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; media-src blob:; connect-src data: blob:; worker-src blob:;">
+    <title>英语跟读音频生成器</title>
+    <style>{{APP_STYLES}}</style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"><svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M5 9v6M9 6v12M13 4v16M17 7v10M21 10v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <div><h1>英语跟读音频生成器</h1><p>本地运行 · 完全离线</p></div>
+        </div>
+        <div class="model-status"><span id="status-dot" class="status-dot"></span><span id="model-status-text">正在准备语音模型…</span><span id="runtime-mode" class="mode">兼容模式</span></div>
+      </header>
+
+      <main class="workspace">
+        <section class="panel input-panel">
+          <div class="panel-heading"><h2>单词 / 短语 / 句子</h2><span class="item-stat">共 <strong id="item-count">0</strong> 条</span></div>
+          <textarea id="input" aria-label="英语词条" placeholder="每行输入一个词条，例如：&#10;&#10;environment&#10;protect the environment&#10;take part in">1. environment
+2、protect the environment
+③ take part in
+四、instead of
+（5）look forward to</textarea>
+          <p class="input-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5M12 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>支持粘贴带序号的内容，程序会自动清理</p>
+          <div class="preview-heading">清理后预览 <span>点击播放可试听单条</span></div>
+          <div id="item-preview" class="item-preview"></div>
+        </section>
+
+        <aside class="panel settings-panel">
+          <section class="setting-section"><h2>发音</h2><div class="segmented"><button class="segment selected" type="button" data-locale="en-US">美式英语</button><button class="segment" type="button" data-locale="en-GB">英式英语</button></div></section>
+          <section class="setting-section"><h2>音色</h2><div id="voice-list" class="voice-list"></div></section>
+          <section class="setting-section"><h2>重复次数</h2><div class="repeat-group"><button class="repeat-button" type="button" data-repeat="1">1 次</button><button class="repeat-button selected" type="button" data-repeat="2">2 次</button><button class="repeat-button" type="button" data-repeat="3">3 次</button></div></section>
+          <details class="advanced"><summary>高级设置</summary><div class="advanced-body">
+            <label class="range-row"><span>朗读速度</span><input id="speed" type="range" min="0.7" max="1.2" step="0.05" value="0.9"><output id="speed-value">0.90×</output></label>
+            <label class="range-row"><span>同词重复间隔</span><input id="repeat-gap" type="range" min="0.3" max="5" step="0.1" value="1.2"><output id="repeat-gap-value">1.2 秒</output></label>
+            <label class="range-row"><span>不同词条间隔</span><input id="item-gap" type="range" min="0.5" max="10" step="0.1" value="2"><output id="item-gap-value">2.0 秒</output></label>
+            <button id="restore-defaults" class="restore" type="button">恢复默认设置</button>
+          </div></details>
+          <div id="generation-progress" class="generation-progress" hidden><div class="progress-top"><strong>正在生成音频</strong><span id="progress-count">0 / 0</span></div><div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div><div class="progress-bottom"><span id="progress-text">准备生成…</span><button id="cancel" type="button">取消生成</button></div></div>
+          <div class="generate-row"><button id="generate" class="generate" type="button" disabled>生成音频</button><button id="retry" class="retry" type="button" hidden>重试</button><div id="message" class="message">模型就绪后即可生成</div></div>
+        </aside>
+
+        <section id="result" class="panel result" hidden><button id="replay" class="replay" type="button" title="重新播放" aria-label="重新播放">↺</button><audio id="audio" controls></audio><a id="download" class="download" download="英语跟读.wav"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 19h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>导出 WAV</a></section>
+      </main>
+    </div>
+    {{EMBEDDED_ASSETS}}
+    <script>{{APP_BUNDLE}}</script>
+  </body>
+</html>

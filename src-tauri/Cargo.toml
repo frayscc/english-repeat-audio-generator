@@ -1,0 +1,22 @@
+[package]
+name = "english-reader"
+version = "2.0.0"
+description = "Offline English repeat audio generator"
+authors = ["English Reader contributors"]
+edition = "2021"
+
+[lib]
+name = "english_reader_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+espeak-ng = { version = "0.2.0", default-features = false, features = ["bundled-data-en"] }
+log = "0.4"
+ort = "=2.0.0-rc.13"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", features = ["protocol-asset"] }
+tauri-plugin-log = "2"
