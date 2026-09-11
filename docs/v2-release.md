@@ -15,13 +15,15 @@
 
 当前是 ad-hoc/linker-signed 测试包，没有 Developer ID 和 notarization。其他 Mac 第一次打开时可能被 Gatekeeper 阻止，可在系统设置的“隐私与安全性”中确认打开；这不是 TTS 初始化故障。对外正式分发前建议完成 Developer ID 签名和 notarization。
 
-ZIP SHA-256：`b8398f501249c4705f108ebd88f86c1a5e96554a4a5259ece70f24a477ceb6b7`。压缩包已经通过完整性测试。本包已经包含 2026-09-11 的美式/英式发音修复。
+ZIP SHA-256：`96b258c2237801517c826dc048417fc40e2e6d6f91c481888eb392aa9a2ae6ae`。压缩包已经通过完整性测试。本包包含美式/英式发音修复及 GPL/第三方许可文件。
 
 最低目标是 Apple Silicon。Intel macOS 尚未构建或测试。
 
 ## Windows
 
-Windows x64 便携包尚未构建，因为当前只有 macOS 构建环境。在 Windows x64 主机运行 `npm run build:windows-portable`，脚本会执行无安装器构建并产生 `release-v2/EnglishReader-Windows-x64/EnglishReader.exe + resources/`。必须随后在 Windows 主机上验证 WebView2 Runtime、完全断网、Voice、100 条生成与 WAV 导出。
+Windows x64 便携包已由 GitHub Actions 构建，包含 `EnglishReader.exe + DirectML.dll + resources/ + 许可文件`。ZIP 约 81 MiB，SHA-256：`61ba05d39d73c809c43081c7fed0b20888eeed4e4df9a9e8828218c5fd71f09b`。云端自动启动测试确认 ONNX Session、Tokenizer 与 eSpeak NG phonemizer 全部 ready。
+
+仍需在实体 Windows 机器验证完全断网、六个 Voice 的真实播放、100 条生成、WAV 导出和 SmartScreen 行为。
 
 Windows 11 通常带有 WebView2 Runtime，但不能据此承诺所有旧 Windows 10 机器都有。首版应在发布说明中列出 WebView2 前置条件；未签名 `.exe` 也可能触发 SmartScreen。
 

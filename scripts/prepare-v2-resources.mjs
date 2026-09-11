@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { copyFile, mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const root = process.cwd();
@@ -18,6 +18,7 @@ const files = [
 ];
 
 await mkdir(resourceRoot, { recursive: true });
+await rm(path.join(resourceRoot, ".DS_Store"), { force: true });
 const resources = [];
 for (const [id, sourceRelativePath, targetRelativePath, type] of files) {
   const source = path.join(root, sourceRelativePath);

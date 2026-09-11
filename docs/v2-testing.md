@@ -23,13 +23,13 @@
 
 | 测试 | macOS Apple M4 | Windows x64 |
 | --- | --- | --- |
-| 应用启动 | Pass | Not Tested |
-| 完全本地资源 | Pass（静态策略、包内容及启动期 socket 审计） | Not Tested |
-| 模型初始化 | Pass | Not Tested |
-| 原生 CPU TTS | Pass | Not Tested |
+| 应用启动 | Pass | Pass（GitHub `windows-latest` x64 runner） |
+| 完全本地资源 | Pass（静态策略、包内容及启动期 socket 审计） | 包结构与清单 Pass；物理断网待测 |
+| 模型初始化 | Pass | Pass（Release EXE 启动日志） |
+| 原生 CPU TTS | Pass | Session 与 phonemizer ready；真实播放待测 |
 | WebGPU 检测/Session | Pass | Not Tested |
 | WebGPU 真实推理 | Fail，已从发行路径移除 | Not Tested |
-| 无 GPU CPU 路径 | Pass | Not Tested |
+| 无 GPU CPU 路径 | Pass | 初始化 Pass |
 | 单条试听底层链路 | Pass | Not Tested |
 | LRU 与取消队列单元测试 | Pass | Not Tested |
 | 6 个 Voice 后端合成 | Pass（修复后真实烟测） | Not Tested |
@@ -51,7 +51,7 @@
 
 ## 尚未满足的最终验收
 
-- Windows 便携目录构建与 WebView2 实机测试。
+- Windows 便携目录已经构建并在 GitHub runner 启动；仍需实体 Windows 机器完成六音色试听、完整 100 条、WAV 导出、物理断网与 WebView2 版本覆盖测试。
 - macOS 六个 Voice 的逐个 UI 试听、完整 100 条 UI 生成和导出点击流程（后端六音色已经通过）。
 - macOS 物理断网抓包确认 0 请求。
 - 未签名包在另一台干净 Apple Silicon Mac 上的复制/首次打开验证。

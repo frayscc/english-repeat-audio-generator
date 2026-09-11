@@ -44,7 +44,7 @@ Tauri 2 桌面应用 + 结构化原始资源 + Rust 后台 ONNX 推理
 | CPU fallback | 正式 CPU 路径 Pass |
 | 启动期网络 socket | 0 |
 
-分享 ZIP 约 74 MiB（逻辑大小），SHA-256 为 `b8398f501249c4705f108ebd88f86c1a5e96554a4a5259ece70f24a477ceb6b7`，完整性测试通过。应用为 arm64 ad-hoc/linker-signed，未使用 Developer ID 签名。
+分享 ZIP 约 74 MiB（逻辑大小），SHA-256 为 `96b258c2237801517c826dc048417fc40e2e6d6f91c481888eb392aa9a2ae6ae`，完整性测试通过。应用为 arm64 ad-hoc/linker-signed，未使用 Developer ID 签名。
 
 V1 的已知基线为 100 项约 423.9 秒、Chrome RSS 约 1.96 GiB。词表不完全相同，因此速度只可表述为同类压力测试约快一倍；内存改善更明确。
 
@@ -54,7 +54,7 @@ Apple M4 的 WKWebView 能发现 WebGPU，也能为 q8f16 创建 Session（约 4
 
 ## Windows
 
-当前 macOS 主机不能生成并诚实验证 Windows 便携包。已提供 `npm run build:windows-portable`，目标产物为：
+Windows x64 便携包已由 GitHub Actions 的 `windows-latest` runner 构建：
 
 ```text
 release-v2/EnglishReader-Windows-x64/
@@ -62,7 +62,7 @@ release-v2/EnglishReader-Windows-x64/
   resources/
 ```
 
-仍需 Windows x64 实机验证 WebView2、启动、六音色、100 条、WAV 导出、物理断网和 SmartScreen 行为。
+Release EXE 自动启动成功，日志确认 ONNX Session、Tokenizer 和 eSpeak NG phonemizer ready（初始化约 1.22 秒）。ZIP 约 81 MiB，SHA-256 为 `61ba05d39d73c809c43081c7fed0b20888eeed4e4df9a9e8828218c5fd71f09b`。仍需实体 Windows x64 机器验证六音色真实播放、100 条、WAV 导出、物理断网和 SmartScreen 行为。
 
 ## 测试结果
 
@@ -74,7 +74,7 @@ release-v2/EnglishReader-Windows-x64/
 
 ## 已知限制
 
-- Windows 与 Intel Mac 尚未实测。
+- Windows 已通过云端构建和启动冒烟测试，但实体 Windows GUI/音频验收与 Intel Mac 仍未完成。
 - 当前 macOS 包未签名、未 notarize，异机首次打开可能出现 Gatekeeper 提示。
 - 物理断网抓包、V2 GUI 六音色逐个点击与 GUI WAV 导出仍需最终人工验收。
 - GPU 不在 V2 正式支持范围；这是基于真实失败结果的明确选择，不是自动降级成功的宣称。

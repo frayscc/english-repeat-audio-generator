@@ -64,4 +64,4 @@ English Reader.app/Contents/Resources/resources/
 - 开发：`npm run tauri dev`
 - 前端与资源校验：`npm run build:v2 && npm run test:v2`
 - macOS 应用：`npm run tauri build -- --bundles app`
-- Windows 便携版必须在 Windows x64 主机或 CI 上构建和实测；macOS 不能诚实替代 WebView2/Windows 验收。
+- Windows 便携版通过 GitHub Actions 的 Windows x64 runner 构建，并执行 EXE 启动、模型及 phonemizer ready 冒烟测试；完整 GUI、音频播放和导出仍需实体 Windows 机器验收。
