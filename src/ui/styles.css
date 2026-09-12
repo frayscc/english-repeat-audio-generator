@@ -92,6 +92,7 @@ textarea:focus { border-color: #57926f; box-shadow: 0 0 0 3px rgba(63, 129, 88, 
 .result audio { width: 100%; min-width: 0; }
 .replay { width: 38px; height: 38px; border: 1px solid #d4ddd6; border-radius: 50%; color: #285f42; background: #fff; cursor: pointer; font-size: 20px; }
 .download { display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; border: 1px solid #cfd9d1; border-radius: 10px; color: #285f42; background: #fff; text-decoration: none; font-size: 13px; font-weight: 650; white-space: nowrap; }
+.download[aria-disabled="true"] { opacity: .65; pointer-events: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } textarea { min-height: 280px; } }
 @media (max-width: 600px) { .app { width: min(100% - 24px, 1180px); padding-top: 16px; } .topbar { align-items: flex-start; } .mode { display: none; } .model-status { font-size: 11px; } .brand h1 { font-size: 18px; } .input-panel, .settings-panel { padding: 17px; } .result { grid-template-columns: 1fr; } .download { justify-content: center; } }

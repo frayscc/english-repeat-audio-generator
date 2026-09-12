@@ -23,6 +23,8 @@ ZIP SHA-256：`96b258c2237801517c826dc048417fc40e2e6d6f91c481888eb392aa9a2ae6ae`
 
 Windows x64 便携包已由 GitHub Actions 构建，包含 `EnglishReader.exe + DirectML.dll + resources/ + 许可文件`。ZIP 约 81 MiB，SHA-256：`61ba05d39d73c809c43081c7fed0b20888eeed4e4df9a9e8828218c5fd71f09b`。云端自动启动测试确认 ONNX Session、Tokenizer 与 eSpeak NG phonemizer 全部 ready。
 
+2026-09-12 后的构建使用原生“另存为”对话框和原生文件写入导出 WAV，修复 Windows WebView2 中 `blob:` 下载无响应的问题。音频控件内建的浏览器下载菜单已隐藏，请使用界面右侧“导出 WAV”按钮。
+
 仍需在实体 Windows 机器验证完全断网、六个 Voice 的真实播放、100 条生成、WAV 导出和 SmartScreen 行为。
 
 Windows 11 通常带有 WebView2 Runtime，但不能据此承诺所有旧 Windows 10 机器都有。首版应在发布说明中列出 WebView2 前置条件；未签名 `.exe` 也可能触发 SmartScreen。

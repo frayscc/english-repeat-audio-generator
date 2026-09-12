@@ -3,5 +3,9 @@
   "identifier": "default",
   "description": "Permissions for the main English Reader window",
   "windows": ["main"],
-  "permissions": ["core:default"]
+  "permissions": [
+    "core:default",
+    "dialog:allow-save",
+    "fs:allow-write-file"
+  ]
 }

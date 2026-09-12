@@ -46,6 +46,7 @@
 4. Tauri Debug 和 Release 的 raw IPC 返回类型不同：前端同时接受 `ArrayBuffer` 与 `Uint8Array`。
 5. 旧 V2 构建目录残留 Worker sourcemap：构建前清理精确输出目录。
 6. 临时纯 JavaScript G2P 会产生 Kokoro 词表不支持的 `ɫ`、`ɝ` 等音素，并改变重音，导致英语出现明显异域口音：已移除该路径，恢复与 V1 phonemizer 一致的美式/英式音素输出；单元测试固定验证 `hello teacher water`。
+7. Windows WebView2 能播放 `blob:` WAV，但浏览器式 `<a download>` 和媒体控件下载不能可靠落盘：桌面版改用 Tauri 原生保存对话框和二进制文件写入，并隐藏不可用的媒体下载菜单；浏览器 V1 继续保留原下载方式。
 
 补充发行验证：修复后六个 Voice 对 `hello` 的真实合成全部通过，合计 199,800 samples / 3.819 s（Debug）；Release 启动日志确认 eSpeak NG 0.2.0 ready。Release 初始化期间 `lsof` 未发现 TCP/UDP socket；macOS 分享 ZIP 已通过完整性测试。
 

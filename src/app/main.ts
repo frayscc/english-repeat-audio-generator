@@ -1,4 +1,6 @@
 import { invoke, isTauri } from "@tauri-apps/api/core";
+import { save } from "@tauri-apps/plugin-dialog";
+import { writeFile } from "@tauri-apps/plugin-fs";
 import { AudioProjectGenerator, ItemSynthesisError } from "../audio/projectGenerator";
 import { encodePcm16Wav } from "../audio/wav";
 import { DEFAULT_SETTINGS } from "../config/defaults";
@@ -84,6 +86,7 @@ const engine: TTSEngine & { readonly mode: "gpu" | "compatibility" } = runningIn
   : new KokoroEngine();
 const projectGenerator = new AudioProjectGenerator(engine, runningInTauri ? 16 : 128);
 let audioUrl: string | null = null;
+let generatedWav: Uint8Array | null = null;
 let previewUrl: string | null = null;
 let previewAudio: HTMLAudioElement | null = null;
 
@@ -326,6 +329,36 @@ function exportFilename(date = new Date()): string {
   return `英语跟读_${date.getFullYear()}-${two(date.getMonth() + 1)}-${two(date.getDate())}_${two(date.getHours())}${two(date.getMinutes())}.wav`;
 }
 
+async function exportGeneratedWav(event: MouseEvent): Promise<void> {
+  if (!runningInTauri) return;
+  event.preventDefault();
+  if (!generatedWav) {
+    setMessage("请先生成音频，再导出 WAV。", "error");
+    return;
+  }
+  if (ui.download.dataset.exporting === "true") return;
+  ui.download.dataset.exporting = "true";
+  ui.download.setAttribute("aria-disabled", "true");
+  try {
+    const selectedPath = await save({
+      defaultPath: ui.download.download || exportFilename(),
+      filters: [{ name: "WAV 音频", extensions: ["wav"] }],
+    });
+    if (!selectedPath) {
+      setMessage("已取消保存，生成的音频仍然保留。", "normal");
+      return;
+    }
+    const outputPath = selectedPath.toLowerCase().endsWith(".wav") ? selectedPath : `${selectedPath}.wav`;
+    await writeFile(outputPath, generatedWav);
+    setMessage(`WAV 已保存：${outputPath}`);
+  } catch (error) {
+    setMessage(`导出失败：${error instanceof Error ? error.message : String(error)}`, "error");
+  } finally {
+    delete ui.download.dataset.exporting;
+    ui.download.removeAttribute("aria-disabled");
+  }
+}
+
 async function generate(): Promise<void> {
   const items = parsedItems();
   if (!state.ready || state.generating) return;
@@ -363,6 +396,7 @@ async function generate(): Promise<void> {
       },
     });
     const wav = encodePcm16Wav(project.audio);
+    generatedWav = wav;
     if (audioUrl) URL.revokeObjectURL(audioUrl);
     audioUrl = URL.createObjectURL(new Blob([wav.buffer as ArrayBuffer], { type: "audio/wav" }));
     ui.audio.src = audioUrl;
@@ -422,6 +456,7 @@ for (const input of [ui.speed, ui.repeatGap, ui.itemGap]) input.addEventListener
 });
 ui.defaults.addEventListener("click", restoreDefaults);
 ui.generate.addEventListener("click", () => void generate());
+ui.download.addEventListener("click", (event) => void exportGeneratedWav(event));
 ui.cancel.addEventListener("click", () => {
   state.controller?.abort();
   setMessage("正在停止生成…");
@@ -435,6 +470,7 @@ window.addEventListener("beforeunload", () => {
   state.controller?.abort();
   previewAudio?.pause();
   if (audioUrl) URL.revokeObjectURL(audioUrl);
+  generatedWav = null;
   if (previewUrl) URL.revokeObjectURL(previewUrl);
   cleanupOfflineResources();
   void engine.dispose();

@@ -21,6 +21,9 @@ assert.ok(!html.includes("data:application"), "V2 HTML must not contain Base64 a
 assert.ok(!script.includes("huggingface.co"), "V2 frontend must not refer to Hugging Face");
 assert.ok(!script.includes("cdn.jsdelivr"), "V2 frontend must not refer to a CDN");
 assert.ok(!script.includes("onnxruntime-web"), "V2 frontend must not bundle the retired WASM runtime");
+assert.ok(script.includes("plugin:dialog|save"), "V2 must use the native save dialog for WAV export");
+assert.ok(script.includes("plugin:fs|write_file"), "V2 must write WAV data through the native filesystem plugin");
+assert.ok(html.includes('controlslist="nodownload"'), "V2 must hide the unsupported WebView media download action");
 
 for (const resource of manifest.resources) {
   assert.match(resource.sha256, /^[a-f0-9]{64}$/);
