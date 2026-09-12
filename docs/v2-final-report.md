@@ -44,7 +44,7 @@ Tauri 2 桌面应用 + 结构化原始资源 + Rust 后台 ONNX 推理
 | CPU fallback | 正式 CPU 路径 Pass |
 | 启动期网络 socket | 0 |
 
-分享 ZIP 约 74 MiB（逻辑大小），SHA-256 为 `96b258c2237801517c826dc048417fc40e2e6d6f91c481888eb392aa9a2ae6ae`，完整性测试通过。应用为 arm64 ad-hoc/linker-signed，未使用 Developer ID 签名。
+WAV 导出修复版 ZIP 约 74 MiB（逻辑大小），SHA-256 为 `c4832cb0d517c9716a106e78f48eecd4712c51f25c7a0efff0ad4a59ac24a5c4`，完整性测试通过。应用为 arm64 ad-hoc/linker-signed，未使用 Developer ID 签名。
 
 V1 的已知基线为 100 项约 423.9 秒、Chrome RSS 约 1.96 GiB。词表不完全相同，因此速度只可表述为同类压力测试约快一倍；内存改善更明确。
 
@@ -62,7 +62,7 @@ release-v2/EnglishReader-Windows-x64/
   resources/
 ```
 
-Release EXE 自动启动成功，日志确认 ONNX Session、Tokenizer 和 eSpeak NG phonemizer ready（初始化约 1.22 秒）。ZIP 约 81 MiB，SHA-256 为 `61ba05d39d73c809c43081c7fed0b20888eeed4e4df9a9e8828218c5fd71f09b`。仍需实体 Windows x64 机器验证六音色真实播放、100 条、WAV 导出、物理断网和 SmartScreen 行为。
+Release EXE 自动启动成功，日志确认 ONNX Session、Tokenizer 和 eSpeak NG phonemizer ready。WAV 导出修复版 ZIP 约 81 MiB，SHA-256 为 `af489b40fbfd8eb0efde1b4b4e45c6bd2f601c80c1a9d88f604a81bbb3d2ae7a`。仍需实体 Windows x64 机器复测原生保存对话框及真实播放，并验证 100 条、物理断网和 SmartScreen 行为。
 
 ## 测试结果
 

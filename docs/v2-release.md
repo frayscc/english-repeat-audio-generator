@@ -15,13 +15,13 @@
 
 当前是 ad-hoc/linker-signed 测试包，没有 Developer ID 和 notarization。其他 Mac 第一次打开时可能被 Gatekeeper 阻止，可在系统设置的“隐私与安全性”中确认打开；这不是 TTS 初始化故障。对外正式分发前建议完成 Developer ID 签名和 notarization。
 
-ZIP SHA-256：`96b258c2237801517c826dc048417fc40e2e6d6f91c481888eb392aa9a2ae6ae`。压缩包已经通过完整性测试。本包包含美式/英式发音修复及 GPL/第三方许可文件。
+ZIP SHA-256：`c4832cb0d517c9716a106e78f48eecd4712c51f25c7a0efff0ad4a59ac24a5c4`。压缩包已经通过完整性测试。本包包含美式/英式发音修复、原生 WAV 导出及 GPL/第三方许可文件。
 
 最低目标是 Apple Silicon。Intel macOS 尚未构建或测试。
 
 ## Windows
 
-Windows x64 便携包已由 GitHub Actions 构建，包含 `EnglishReader.exe + DirectML.dll + resources/ + 许可文件`。ZIP 约 81 MiB，SHA-256：`61ba05d39d73c809c43081c7fed0b20888eeed4e4df9a9e8828218c5fd71f09b`。云端自动启动测试确认 ONNX Session、Tokenizer 与 eSpeak NG phonemizer 全部 ready。
+Windows x64 便携包已由 GitHub Actions 构建，包含 `EnglishReader.exe + DirectML.dll + resources/ + 许可文件`。WAV 导出修复版 ZIP 约 81 MiB，SHA-256：`af489b40fbfd8eb0efde1b4b4e45c6bd2f601c80c1a9d88f604a81bbb3d2ae7a`。云端自动启动测试确认 ONNX Session、Tokenizer 与 eSpeak NG phonemizer 全部 ready。
 
 2026-09-12 后的构建使用原生“另存为”对话框和原生文件写入导出 WAV，修复 Windows WebView2 中 `blob:` 下载无响应的问题。音频控件内建的浏览器下载菜单已隐藏，请使用界面右侧“导出 WAV”按钮。
 
